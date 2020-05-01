@@ -739,11 +739,11 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     if(pl.getConfig().getBoolean("allow.spectator")){
                         pl.getConfig().set("allow.spectator", false);
                         pl.saveConfig();
-                        return sendMessage(sender, fr.naruse.spleef.v1_12.util.Message.SPLEEF.getMessage()+" §a"+ fr.naruse.spleef.v1_12.util.Message.DONE.getMessage()+" §7(Spectator: false)");
+                        return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+ Message.DONE.getMessage()+" §7(Spectator: false)");
                     }else{
                         pl.getConfig().set("allow.spectator", true);
                         pl.saveConfig();
-                        return sendMessage(sender, fr.naruse.spleef.v1_12.util.Message.SPLEEF.getMessage()+" §a"+ fr.naruse.spleef.v1_12.util.Message.DONE.getMessage()+" §7(Spectator: true)");
+                        return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+ Message.DONE.getMessage()+" §7(Spectator: true)");
                     }
                 }
                 return help(sender, 2);

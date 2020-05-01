@@ -1,16 +1,19 @@
 package fr.naruse.spleef.common;
 
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-import fr.naruse.spleef.main.SpleefPlugin;
-import fr.naruse.spleef.manager.SpleefPluginV1_12;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitPlayer;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.regions.CuboidRegion;
+
+import fr.naruse.spleef.main.SpleefPlugin;
 
 public class Reflections {
 
@@ -52,17 +55,4 @@ public class Reflections {
         return con;
     }
 
-    public static Selection getSelection(SpleefPlugin pl, Player p) {
-        try{
-            WorldEditPlugin worldEditPlugin = ((SpleefPluginV1_12) pl.getSpleefPlugin()).worldEditPlugin;
-            Class worldEditPluginClass = worldEditPlugin.getClass();
-
-            Method getSelectionMethod = worldEditPluginClass.getDeclaredMethod("getSelection", Player.class);
-            Selection selection = (Selection) getSelectionMethod.invoke(worldEditPlugin, p);
-            return selection;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

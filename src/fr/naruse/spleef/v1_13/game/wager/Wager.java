@@ -126,80 +126,80 @@ public class Wager implements Listener {
             return;
         }
         ItemStack item = e.getCurrentItem();
-        if(item.getType() == Material.STAINED_GLASS_PANE){
+        if(item.getType().name().contains("STAINED_GLASS_PANE")){
             e.setCancelled(true);
             return;
         }
         if(e.getSlot() > 9*2 && e.getClickedInventory() != p.getInventory()){
-            if(item.getType() == Material.WOOL){
-                if(inventoryFinal == null){
-                    e.setCancelled(true);
-                    if(item.getData().getData() == 14){
-                        player1.closeInventory();
-                        player2.closeInventory();
-                        player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        decline();
-                    }else if(item.getData().getData() == 5){
-                        if(p == player1){
-                            player1Ready = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            if(player2Ready){
-                                p.closeInventory();
-                                player2.closeInventory();
-                                generateFinalInv();
-                                player1.openInventory(inventoryFinal);
-                                player2.openInventory(inventoryFinal);
-                            }
-                        }else{
-                            player2Ready = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            if(player1Ready){
-                                p.closeInventory();
-                                player1.closeInventory();
-                                generateFinalInv();
-                                player1.openInventory(inventoryFinal);
-                                player2.openInventory(inventoryFinal);
-                            }
-                        }
-                    }
-                }else if(e.getSlot() > 9*5){
-                    e.setCancelled(true);
-                    if(item.getData().getData() == 14){
-                        player1.closeInventory();
-                        player2.closeInventory();
-                        player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        decline();
-                    }else if(item.getData().getData() == 5){
-                        if(p == player1){
-                            player1FinalReady = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            p.closeInventory();
-                            if(player2FinalReady){
-                                p.closeInventory();
-                                player2.closeInventory();
-                                inventoryFinal.remove(inventoryFinal.getItem(9*6-3));
-                                inventoryFinal.remove(inventoryFinal.getItem(9*6-5));
-                                wagerActive = true;
-                                player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                                player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                            }
-                        }else{
-                            player2FinalReady = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            p.closeInventory();
-                            if(player1FinalReady){
-                                p.closeInventory();
-                                player1.closeInventory();
-                                wagerActive = true;
-                                player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                                player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
+        	if(item.getType().name().contains("WOOL")) {
+	            if(inventoryFinal == null){
+	                e.setCancelled(true);
+	                if(item.getType() == Material.RED_WOOL){
+	                    player1.closeInventory();
+	                    player2.closeInventory();
+	                    player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+	                    player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+	                    decline();
+	                }else if(item.getType() == Material.LIME_WOOL){
+	                    if(p == player1){
+	                        player1Ready = true;
+	                        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+	                        if(player2Ready){
+	                            p.closeInventory();
+	                            player2.closeInventory();
+	                            generateFinalInv();
+	                            player1.openInventory(inventoryFinal);
+	                            player2.openInventory(inventoryFinal);
+	                        }
+	                    }else{
+	                        player2Ready = true;
+	                        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+	                        if(player1Ready){
+	                            p.closeInventory();
+	                            player1.closeInventory();
+	                            generateFinalInv();
+	                            player1.openInventory(inventoryFinal);
+	                            player2.openInventory(inventoryFinal);
+	                        }
+	                    }
+	                }
+	            }else if(e.getSlot() > 9*5){
+	                e.setCancelled(true);
+	                if(item.getType() == Material.RED_WOOL){
+	                    player1.closeInventory();
+	                    player2.closeInventory();
+	                    player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+	                    player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+	                    decline();
+	                }else if(item.getType() == Material.LIME_WOOL){
+	                    if(p == player1){
+	                        player1FinalReady = true;
+	                        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+	                        p.closeInventory();
+	                        if(player2FinalReady){
+	                            p.closeInventory();
+	                            player2.closeInventory();
+	                            inventoryFinal.remove(inventoryFinal.getItem(9*6-3));
+	                            inventoryFinal.remove(inventoryFinal.getItem(9*6-5));
+	                            wagerActive = true;
+	                            player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+	                            player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+	                        }
+	                    }else{
+	                        player2FinalReady = true;
+	                        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+	                        p.closeInventory();
+	                        if(player1FinalReady){
+	                            p.closeInventory();
+	                            player1.closeInventory();
+	                            wagerActive = true;
+	                            player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+	                            player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+	                        }
+	                    }
+	                }
+	            }
+        	}
         }
     }
 
@@ -235,40 +235,51 @@ public class Wager implements Listener {
     }
 
     private void generateInv() {
+    	Material[] glassPanes = new Material[] {
+    		Material.WHITE_STAINED_GLASS_PANE,
+    		Material.ORANGE_STAINED_GLASS_PANE,
+    		Material.MAGENTA_STAINED_GLASS_PANE,
+    		Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+    		Material.YELLOW_STAINED_GLASS_PANE,
+    		Material.LIME_STAINED_GLASS_PANE,
+    		Material.PINK_STAINED_GLASS_PANE,
+    		Material.GRAY_STAINED_GLASS_PANE,
+    	};
+    	Random r = new Random();
         inventory1 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 17; i < 9*3; i += 9){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 9; i < 9*3; i += 9){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         //
         inventory2 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 17; i < 9*3; i += 9){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 9; i < 9*3; i += 9){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(glassPanes[r.nextInt(8)]));
         }
-        ItemStack item = new ItemStack(Material.WOOL, 1, (byte) 5);
+        ItemStack item = new ItemStack(Material.LIME_WOOL);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§2Ok");
         item.setItemMeta(meta);
         inventory2.setItem(9*2+3, item);
         inventory1.setItem(9*2+3, item);
-        item = new ItemStack(Material.WOOL, 1, (byte) 14);
+        item = new ItemStack(Material.RED_WOOL);
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);
@@ -279,29 +290,29 @@ public class Wager implements Listener {
     private void generateFinalInv() {
         inventoryFinal = Bukkit.createInventory(null, 9*6, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
         for(int i = 17; i < 9*6; i += 9){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
         for(int i = 9; i < 9*6; i += 9){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
         for(int i = 9*3+1; i < 9*4; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
         for(int i = 9*5+1; i < 9*6; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.BROWN_STAINED_GLASS_PANE));
         }
-        ItemStack item = new ItemStack(Material.WOOL, 1, (byte) 5);
+        ItemStack item = new ItemStack(Material.LIME_WOOL);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§2Ok");
         item.setItemMeta(meta);
         inventoryFinal.setItem(9*5+3, item);
-        item = new ItemStack(Material.WOOL, 1, (byte) 14);
+        item = new ItemStack(Material.RED_WOOL);
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);

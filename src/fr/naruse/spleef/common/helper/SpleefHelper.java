@@ -1,16 +1,17 @@
 package fr.naruse.spleef.common.helper;
 
-import com.google.common.collect.Lists;
-import fr.naruse.spleef.main.SpleefPlugin;
-import fr.naruse.spleef.manager.SpleefPluginV1_13;
-import fr.naruse.spleef.v1_12.util.SpleefPlayerStatistics;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+
+import com.google.common.collect.Lists;
+
+import fr.naruse.spleef.main.SpleefPlugin;
+import fr.naruse.spleef.manager.SpleefPluginV1_13;
+import fr.naruse.spleef.v1_13.util.SpleefPlayerStatistics;
 
 public class SpleefHelper {
 
@@ -36,7 +37,7 @@ public class SpleefHelper {
             spleefPlayerHashMap.get(p).refreshStatisticFromConfig();
             return spleefPlayerHashMap.get(p);
         }
-        SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics(SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
+        SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
         spleefPlayerHashMap.put(p, spleefPlayerStatistics);
         return spleefPlayerStatistics;
     }

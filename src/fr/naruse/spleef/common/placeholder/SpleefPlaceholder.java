@@ -1,8 +1,9 @@
 package fr.naruse.spleef.common.placeholder;
 
+import org.bukkit.Bukkit;
+
 import fr.naruse.spleef.main.SpleefPlugin;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import org.bukkit.Bukkit;
 
 public class SpleefPlaceholder {
     private SpleefPlugin pl;

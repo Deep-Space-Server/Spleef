@@ -1,18 +1,14 @@
 package fr.naruse.spleef.v1_13.game.spleef.type;
 
-import fr.naruse.spleef.common.Utils;
-import fr.naruse.spleef.manager.SpleefPluginV1_13;
-import fr.naruse.spleef.v1_13.game.spleef.Spleef;
-import fr.naruse.spleef.v1_13.game.spleef.SpleefGameMode;
-import fr.naruse.spleef.v1_13.game.wager.Wager;
-import fr.naruse.spleef.v1_13.util.Message;
+import java.util.HashMap;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -27,8 +23,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.Random;
+import fr.naruse.spleef.common.Utils;
+import fr.naruse.spleef.manager.SpleefPluginV1_13;
+import fr.naruse.spleef.v1_13.game.spleef.Spleef;
+import fr.naruse.spleef.v1_13.game.spleef.SpleefGameMode;
+import fr.naruse.spleef.v1_13.game.wager.Wager;
+import fr.naruse.spleef.v1_13.util.Message;
 
 public class BowSpleef extends Spleef implements Listener {
     public BowSpleef(SpleefPluginV1_13 pl, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
@@ -164,7 +164,7 @@ public class BowSpleef extends Spleef implements Listener {
                     ItemStack item;
                     ItemMeta meta;
                     if(!allowGoldShovel()){
-                        Material material = Material.DIAMOND_SPADE;
+                        Material material = Material.DIAMOND_SHOVEL;
                         item = new ItemStack(material);
                         meta = item.getItemMeta();
                         meta.setUnbreakable(true);
@@ -177,7 +177,7 @@ public class BowSpleef extends Spleef implements Listener {
                     item.setItemMeta(meta);
                     p.getInventory().addItem(item);
                     if(allowSnowballs()){
-                        p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 64*4));
+                        p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 64*4));
                     }
                     p.getInventory().addItem(new ItemStack(Material.ARROW, 64*8));
                 }
@@ -213,56 +213,58 @@ public class BowSpleef extends Spleef implements Listener {
             e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
             return;
         }
-        if(e.getHitBlock() == null) {
+        if(e.getHitBlock() == null || e.getHitBlock().getType() == Material.AIR) {
             return;
         }
-        if(getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME){
-            getBlocks().add(e.getHitBlock());
-            getBlocksOfRegionVerif().remove(e.getHitBlock());
-            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
-            for(Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)){
-                if(materialHashMap.containsKey(b)){
-                    b.setType(materialHashMap.get(b));
-                    b.setData(dataHashMap.get(b));
-                }
+        if(/*getAuthorizedMaterial().contains(e.getHitBlock().getType()) &&*/ getGame().GAME){
+            for(Block b : Utils.getCircle(e.getHitBlock().getLocation(), 1)){
+            	if(b.getType() == Material.AIR) continue;
+                getBlocks().add(b);
+                getBlocksOfRegionVerif().remove(b);
+                getTypeOfLocationHashMap().put(b.getLocation(), b.getType());
+                b.setType(Material.AIR);
+//                if(materialHashMap.containsKey(b)){
+//                    b.setType(materialHashMap.get(b));
+////                    b.setData(dataHashMap.get(b));
+//                }
             }
             projectile.remove();
         }else{
             for(Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)){
                 if(materialHashMap.containsKey(b)){
                     b.setType(materialHashMap.get(b));
-                    b.setData(dataHashMap.get(b));
+//                    b.setData(dataHashMap.get(b));
                 }
             }
         }
     }
 
     private HashMap<Block, Material> materialHashMap = new HashMap<>();
-    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
-    @EventHandler
-    public void blockChange(ProjectileLaunchEvent e){
-        if(!(e.getEntity().getShooter() instanceof Player)){
-            return;
-        }
-        if(!getPlayerInGame().contains(e.getEntity().getShooter())){
-            return;
-        }
-        Projectile projectile = e.getEntity();
-        if(!(projectile instanceof Arrow)){
-            return;
-        }
-        BlockIterator iterator = new BlockIterator(e.getEntity().getWorld(), e.getEntity().getLocation().toVector(), e.getEntity().getVelocity().normalize(), 0.0D, 100);
-        Block hitBlock = null;
-        while (iterator.hasNext()) {
-            hitBlock = iterator.next();
-            if (hitBlock.getTypeId() != 0) {
-                break;
-            }
-        }
-        if(hitBlock.getType() == Material.SNOW_BLOCK){
-            return;
-        }
-        materialHashMap.put(hitBlock, hitBlock.getType());
-        dataHashMap.put(hitBlock, hitBlock.getData());
-    }
+//    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
+//    @EventHandler
+//    public void blockChange(ProjectileLaunchEvent e){
+//        if(!(e.getEntity().getShooter() instanceof Player)){
+//            return;
+//        }
+//        if(!getPlayerInGame().contains(e.getEntity().getShooter())){
+//            return;
+//        }
+//        Projectile projectile = e.getEntity();
+//        if(!(projectile instanceof Arrow)){
+//            return;
+//        }
+//        BlockIterator iterator = new BlockIterator(e.getEntity().getWorld(), e.getEntity().getLocation().toVector(), e.getEntity().getVelocity().normalize(), 0.0D, 100);
+//        Block hitBlock = null;
+//        while (iterator.hasNext()) {
+//            hitBlock = iterator.next();
+//            if (hitBlock.getType() != Material.AIR) {
+//                break;
+//            }
+//        }
+//        if(hitBlock.getType() == Material.SNOW_BLOCK){
+//            return;
+//        }
+//        materialHashMap.put(hitBlock, hitBlock.getType());
+////        dataHashMap.put(hitBlock, hitBlock.getData());
+//    }
 }

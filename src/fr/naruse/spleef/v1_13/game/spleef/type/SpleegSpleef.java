@@ -173,7 +173,7 @@ public class SpleegSpleef extends Spleef implements Listener {
                     ItemStack item;
                     ItemMeta meta;
                     if(!allowGoldShovel()){
-                        Material material = Material.DIAMOND_SPADE;
+                        Material material = Material.DIAMOND_SHOVEL;
                         item = new ItemStack(material);
                         meta = item.getItemMeta();
                         meta.setUnbreakable(true);
@@ -217,14 +217,15 @@ public class SpleegSpleef extends Spleef implements Listener {
         if(e.getHitEntity() != null){
             e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
         }
-        if(e.getHitBlock() == null) {
+        if(e.getHitBlock() == null || e.getHitBlock().getType() == Material.AIR) {
             return;
         }
-        if(getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME){
+        if(/*getAuthorizedMaterial().contains(e.getHitBlock().getType()) &&*/ getGame().GAME){
             getBlocks().add(e.getHitBlock());
             getBlocksOfRegionVerif().remove(e.getHitBlock());
             getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
             e.getHitBlock().setType(Material.AIR);
+            e.getEntity().remove();
             for(Entity entity : e.getEntity().getNearbyEntities(2, 2, 2)){
                 if(entity instanceof Chicken){
                     if(entity.getLocation().getWorld().getName() == getSpleefSpawn().getWorld().getName()){
@@ -238,15 +239,17 @@ public class SpleegSpleef extends Spleef implements Listener {
             Block b = e.getHitBlock();
             if(materialHashMap.containsKey(b)){
                 b.setType(materialHashMap.get(b));
-                b.setData(dataHashMap.get(b));
+//                b.setData(dataHashMap.get(b));
             }
         }
     }
 
     private HashMap<Block, Material> materialHashMap = new HashMap<>();
-    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
+//    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
     @EventHandler
     public void blockChange(ProjectileLaunchEvent e){
+    	boolean b = true;
+    	if(b) return;
         if(!(e.getEntity().getShooter() instanceof Player)){
             return;
         }
@@ -261,15 +264,15 @@ public class SpleegSpleef extends Spleef implements Listener {
         Block hitBlock = null;
         while (iterator.hasNext()) {
             hitBlock = iterator.next();
-            if (hitBlock.getType().getId() != 0) {
+            if (hitBlock.getType() != Material.AIR) {
                 break;
             }
         }
-        if(getAuthorizedMaterial().contains(hitBlock.getType())){
+        if(getAuthorizedMaterial().contains(hitBlock.getType())){ // TODO
             return;
         }
         materialHashMap.put(hitBlock, hitBlock.getType());
-        dataHashMap.put(hitBlock, hitBlock.getData());
+//        dataHashMap.put(hitBlock, hitBlock.getData());
         getTypeOfLocationHashMap().put(hitBlock.getLocation(), hitBlock.getType());
     }
 

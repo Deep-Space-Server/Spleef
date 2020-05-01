@@ -1,14 +1,15 @@
 package fr.naruse.spleef.common.placeholder;
 
-import fr.naruse.spleef.common.helper.SpleefHelper;
-import fr.naruse.spleef.main.SpleefPlugin;
-import fr.naruse.spleef.v1_12.util.SpleefPlayerStatistics;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
+import java.util.List;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import fr.naruse.spleef.common.helper.SpleefHelper;
+import fr.naruse.spleef.main.SpleefPlugin;
+import fr.naruse.spleef.manager.SpleefPluginV1_13;
+import fr.naruse.spleef.v1_13.util.SpleefPlayerStatistics;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class RankingExpansion extends PlaceholderExpansion {
 
@@ -102,13 +103,13 @@ public class RankingExpansion extends PlaceholderExpansion {
         }
         //WINS
         if(identifier.equals("wins")){
-            SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics(SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
+            SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
             spleefPlayerStatistics.refreshStatisticFromConfig();
             return spleefPlayerStatistics.getWins()+"";
         }
         //LOSES
         if(identifier.equals("loses")){
-            SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics(SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
+            SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
             spleefPlayerStatistics.refreshStatisticFromConfig();
             return spleefPlayerStatistics.getLoses()+"";
         }

@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -117,14 +118,14 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
                     restingTime.put(p, 0);
                     for(int i = 0; i != 3; i++){
                         for(Block b : Utils.getCircle(p.getLocation().add(0, -1, 0), i)){
-                            if(authorizedMaterial.contains(b.getType())){
+//                            if(authorizedMaterial.contains(b.getType())){
                                 blocksOfRegionVerif.remove(b);
                                 blocks.add(b);
                                 typeOfLocationHashMap.put(b.getLocation(), b.getType());
                                 b.setType(Material.AIR);
                                 if(pl.getConfig().getBoolean("allow.lightning")){
                                     b.getWorld().strikeLightningEffect(b.getLocation());
-                                }
+//                                }
                             }
                         }
                     }
@@ -163,8 +164,8 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
                 if (p == null) {
                     break;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.STATIONARY_LAVA ||
-                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
+                if (p.getLocation().getBlock().getType() == Material.LAVA ||
+                        p.getLocation().getBlock().getType() == Material.WATER) {
                     sendMessage(getNAME() + " §6" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
                     getMain().spleefs.removePlayer(p);
                     if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
@@ -297,13 +298,13 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
                 for(Player p : playerInGame){
                     Material material;
                     if(allowGoldShovel()){
-                        material = Material.GOLD_SPADE;
+                        material = Material.GOLDEN_SHOVEL;
                     }else{
-                        material = Material.DIAMOND_SPADE;
+                        material = Material.DIAMOND_SHOVEL;
                     }
                     ItemStack item = new ItemStack(material);
                     ItemMeta meta = item.getItemMeta();
-                    meta.spigot().setUnbreakable(true);
+                    meta.setUnbreakable(true);
                     item.setItemMeta(meta);
                     p.getInventory().addItem(item);
                 }
@@ -505,12 +506,12 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
         this.b = b;
         int size = 0;
         for(Block block : blocksFromTwoPoints(a, b)){
-            if(authorizedMaterial.contains(block.getType())){
+//            if(authorizedMaterial.contains(block.getType())){
                 blocksOfRegionVerif.add(block);
                 blocksOfRegion.add(block);
                 typeOfLocationHashMap.put(block.getLocation(), block.getType());
                 size++;
-            }
+//            }
         }
         Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage()+" §aRegion built for "+name+". §7("+size+" blocks found)");
         return this;
@@ -540,12 +541,16 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
         if(e.getEntity() instanceof Player){
             Player p = (Player) e.getEntity();
             if(playerInGame.contains(p)){
+            	if(e.getCause() == DamageCause.VOID) {
+//            		playerInGame.remove(p); // TODO
+            		pl.spleefs.removePlayer(p);
+            	}
                 e.setCancelled(true);
                 if(game.WAIT){
                     e.setCancelled(true);
                     return;
                 }
-                if(p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.STATIONARY_LAVA){
+                if(p.getLocation().getBlock().getType() == Material.LAVA) {
                     e.setCancelled(true);
                 }
             }
@@ -580,7 +585,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
         if(!playerInGame.contains(p)){
             return;
         }
-        if(authorizedMaterial.contains(e.getBlock().getType()) && game.GAME){
+        if(/*authorizedMaterial.contains(e.getBlock().getType()) &&*/ game.GAME){
             if(new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, p, e.getBlock())).isCancelled()){
                 e.setCancelled(true);
             }else{
@@ -588,7 +593,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
                 blocksOfRegionVerif.remove(e.getBlock());
                 e.setCancelled(false);
                 if(allowSnowballs()){
-                    p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 4));
+                    p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 4));
                 }
             }
         }else{
@@ -598,7 +603,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
 
     @EventHandler
     public void item(ItemSpawnEvent e){
-        if(e.getEntity().getItemStack().getType() == Material.SNOW_BALL){
+        if(e.getEntity().getItemStack().getType() == Material.SNOWBALL){
             if(game.GAME){
                 if(blocks.contains(e.getEntity().getLocation().getBlock())){
                     e.setCancelled(true);
@@ -614,16 +619,16 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
             return;
         }
         if(e.getClickedBlock() != null && e.getItem() != null){
-            if(e.getItem().getType() == Material.DIAMOND_SPADE || e.getItem().getType() == Material.GOLD_SPADE)
+            if(e.getItem().getType() == Material.DIAMOND_SHOVEL || e.getItem().getType() == Material.GOLDEN_SHOVEL)
             if(e.getClickedBlock().getType() != Material.SNOW_BLOCK){
-                if(authorizedMaterial.contains(e.getClickedBlock().getType()) && game.GAME){
+                if(/*authorizedMaterial.contains(e.getClickedBlock().getType()) &&*/ game.GAME){
                     if(!new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, p, e.getClickedBlock())).isCancelled()){
                         blocks.add(e.getClickedBlock());
                         blocksOfRegionVerif.remove(e.getClickedBlock());
                         typeOfLocationHashMap.put(e.getClickedBlock().getLocation(), e.getClickedBlock().getType());
                         e.getClickedBlock().setType(Material.AIR);
                         if(allowSnowballs()){
-                            p.getInventory().addItem(new ItemStack(Material.SNOW_BALL));
+                            p.getInventory().addItem(new ItemStack(Material.SNOWBALL));
                         }
                     }
                 }else{
@@ -638,7 +643,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
             sendMessage(NAME+" §6"+p.getName()+"§c "+ Message.LEAVED_THE_GAME.getMessage());
             pl.spleefs.removePlayer(p);
         }
-        if(e.getItem().getType() != Material.GOLD_SPADE && e.getItem().getType() != Material.DIAMOND_SPADE){
+        if(e.getItem().getType() != Material.GOLDEN_SHOVEL && e.getItem().getType() != Material.DIAMOND_SHOVEL){
             e.setCancelled(true);
         }
         if(e.getItem().getType() == Material.EGG){
@@ -649,7 +654,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
             p.getInventory().addItem(new ItemStack(Material.ARROW, 64));
             e.setCancelled(false);
         }
-        if(e.getItem().getType() == Material.SNOW_BALL){
+        if(e.getItem().getType() == Material.SNOWBALL){
             if(pl.getConfig().getBoolean("allow.snowBalls")){
                 e.setCancelled(false);
             }
@@ -688,7 +693,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener{
             }
         }
         if(e.getHitBlock() != null && e.getEntity().getShooter() instanceof Player){
-            if(authorizedMaterial.contains(e.getHitBlock().getType()) && game.GAME){
+            if(/*authorizedMaterial.contains(e.getHitBlock().getType()) &&*/ game.GAME){
                 if(!new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, (Player) e.getEntity().getShooter(), e.getHitBlock())).isCancelled()){
                     blocks.add(e.getHitBlock());
                     blocksOfRegionVerif.remove(e.getHitBlock());

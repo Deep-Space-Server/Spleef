@@ -1,11 +1,7 @@
 package fr.naruse.spleef.v1_13.game.spleef.type;
 
-import com.google.common.collect.Lists;
-import fr.naruse.spleef.manager.SpleefPluginV1_13;
-import fr.naruse.spleef.v1_13.game.spleef.Spleef;
-import fr.naruse.spleef.v1_13.game.spleef.SpleefGameMode;
-import fr.naruse.spleef.v1_13.game.wager.Wager;
-import fr.naruse.spleef.v1_13.util.Message;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,7 +13,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.google.common.collect.Lists;
+
+import fr.naruse.spleef.manager.SpleefPluginV1_13;
+import fr.naruse.spleef.v1_13.game.spleef.Spleef;
+import fr.naruse.spleef.v1_13.game.spleef.SpleefGameMode;
+import fr.naruse.spleef.v1_13.game.wager.Wager;
+import fr.naruse.spleef.v1_13.util.Message;
 
 public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
     private List<List<Player>> teams = Lists.newArrayList();
@@ -81,8 +83,8 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
                 if (p == null) {
                     break;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.STATIONARY_LAVA ||
-                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
+                if (p.getLocation().getBlock().getType() == Material.LAVA ||
+                        p.getLocation().getBlock().getType() == Material.WATER) {
                     if(redTeam.contains(p)){
                         sendMessage(getNAME() + " §4" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
                     }else if(blueTeam.contains(p)){

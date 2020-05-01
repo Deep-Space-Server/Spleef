@@ -18,8 +18,9 @@ public class Utils {
         final List<Block> list = Lists.newArrayList();
         for(double x = -r; x <= r; x++){
             for(double z = -r; z <= r; z++){
-                if((int) center.clone().add(x, 0, z).distance(center) == r){
-                    list.add(center.clone().add(x, 0, z).getBlock());
+            	Location l = center.clone().add(x, 0, z);
+                if(l.distance(center) <= r){
+                    list.add(l.getBlock());
                 }
             }
         }

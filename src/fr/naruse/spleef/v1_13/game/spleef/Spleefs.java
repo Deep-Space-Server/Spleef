@@ -119,6 +119,7 @@ public class Spleefs {
                                         }
                                     }catch (Exception e){
                                         Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage()+" §cEither a world is not found, either a number was wrote wrong.");
+                                    	e.printStackTrace();
                                     }
 
                                 }else{
